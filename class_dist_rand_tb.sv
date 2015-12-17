@@ -5,19 +5,16 @@
  */
 `timescale 1ns/1ps
 
-/* Define the range for your random number */ 
-`define _low  100
-`define _high 1000
-`define _seed 42
 // Random from range 
 class random_range_seed;
     typedef struct packed{
         int low,high;
     } low_high;
+    int seed = 42;
     low_high range = {0,10};
     function int rand_range_gen;
         int out;
-        out = range.low + {$random(`_seed)} % (range.high - range.low);
+        out = range.low + {$random(seed)} % (range.high - range.low);
         return out; 
     endfunction
 endclass  
@@ -36,7 +33,7 @@ module dist_rand_range_test;
     /* Generate a random number */ 
     initial begin
         rand_range=new();        
-        rand_range.range = {`_low,`_high};
+        rand_range.range = {0, 100};
         output_val = rand_range.rand_range_gen; 
         $display("%d \n", output_val);
     end
